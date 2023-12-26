@@ -9,11 +9,20 @@ public class DataPelanggan implements CetakStruk {
     Integer totalBayar;
 
     @Override
-    public void Struk() {
+    public void Struk() throws Exception {
     }
 
     //method untuk mengisi data pelanggan
     public void isiDataPelanggan() throws Exception {
+    }
+
+    public void tampilkanData() throws Exception {
+    }
+
+    public void updateData() throws Exception {
+    }
+
+    public void deleteData() throws Exception {
     }
 
     

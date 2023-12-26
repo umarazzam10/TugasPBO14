@@ -40,15 +40,11 @@ public class Pelanggan extends DataPelanggan{
 
         scanStr.close();
         scanIn.close();
-
-        String sql = "INSERT INTO pelanggan (no_faktur, nama, no_hp, alamat) VALUE ('%s', '%s', '%s', '%s' )";
-            sql = String.format(sql, faktur, nama, noHP, alamat);
-            stmt.execute(sql);
     }
 
     //method untuk mencetak struk
     @Override
-    public void Struk() {
+    public void Struk() throws Exception {
         Integer totalBayar = hargaBarang*jmlBarang;
         this.totalBayar = totalBayar;
 
@@ -78,7 +74,75 @@ public class Pelanggan extends DataPelanggan{
         System.out.println("toUperrcase\t: " + nama.toUpperCase() );
         System.out.println("length\t\t: " + nama.length() );
 
+        String sql = "INSERT INTO minimarket (No Faktur, Nama, No HP, Alamat, Barang, Harga, Jumlah, Total) VALUE ('%s', '%s', '%s', '%s', '%s', '%s', '%s''%s')";
+            sql = String.format(sql, faktur, nama, noHP, alamat, namaBarang, hargaBarang, jmlBarang, this.totalBayar);
+            stmt.execute(sql);
     }
     
+    public void tampilkanData() throws Exception{
+        String sql = "SELECT * FROM minimarket";
+        rs = stmt.executeQuery(sql);
+            
+            System.out.println("+--------------------------------+");
+            System.out.println("|    DATA PELANGGAN THELEMA MART   |");
+            System.out.println("+--------------------------------+");
+
+            while (rs.next()) {
+                String faktur = rs.getString("No Faktur");
+                String nama = rs.getString("Nama");
+                String noHP = rs.getString("No HP");
+                String alamat = rs.getString("Alamat");
+                String namaBarang = rs.getString("Barang");
+                String hargaBarang = rs.getString("Harga");
+                String jmlBarang = rs.getString("Jumlah");
+                String totalBayar = rs.getString("Total");
+
+                
+                System.out.println(String.format("%s. %s -- %s -- (%s)", faktur, nama, alamat, noHP, namaBarang, hargaBarang, jmlBarang, totalBayar));
+            }
+    }
+
+    public void updateData() throws Exception{
+
+        Scanner scanStr = new Scanner(System.in);
+        Scanner scanIn = new Scanner(System.in);
+
+        System.out.print("Masukkan no faktur yang akan diubah = ");
+        faktur = scanStr.next();
+        System.out.print("Masukkan nama pelanggan = ");
+        nama = scanStr.next();
+        System.out.print("Masukkan no HP = ");
+        noHP = scanStr.next();
+        System.out.print("Masukkan alamat = ");
+        alamat = scanStr.next();
+        System.out.print("Masukkan nama barang = ");
+        namaBarang = scanStr.next();
+        System.out.print("Masukkan harga barang = ");
+        hargaBarang = scanIn.nextInt();
+        System.out.print("Masukkan jumlah barang = ");
+        jmlBarang = scanIn.nextInt();
+
+        scanStr.close();
+        scanIn.close();
+
+        String sql = "UPDATE pelanggan SET Nama='%s', No HP='%s', Alamat='%s', Barang='%s', Harga='%s', Jumlah='%s', Total='%s' WHERE No Faktur='%s'";
+            sql = String.format(sql, faktur, nama, noHP, alamat, namaBarang, hargaBarang, jmlBarang, this.totalBayar);
+            stmt.execute(sql);
+    }
+
+    public void deleteData() throws Exception{
+        Scanner scanner = new Scanner(System.in);
+        // ambil input dari user
+        System.out.print("Faktur yang mau dihapus : ");
+        String faktur = (scanner.nextLine());
+        
+        // buat query hapus
+        String sql = String.format("DELETE FROM pelanggan WHERE no_faktur='%s'", faktur);
+
+        // hapus data
+        stmt.execute(sql);
+        
+        System.out.println("Data telah terhapus...");
+    }
 
 }
